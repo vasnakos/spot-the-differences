@@ -2,15 +2,18 @@ import React, {Component} from 'react';
 import leftImage from './images/left-image.jpg';
 import rightImage from './images/right-image.jpg';
 import answersCoords from './data/answers';
+import Timer from './components/Timer';
 import './App.css';
 
 class App extends Component {
-    componentDidMount() {
-        this.handleCanvas();
-
+    constructor(){
+        super();
         this.state = {
             answersCoords
         };
+    }
+    componentDidMount() {
+        this.handleCanvas();
     }
 
     /** Function to draw an image on a canvas element
@@ -105,7 +108,8 @@ class App extends Component {
                     <h1>Spot the Differences</h1>
                 </header>
 
-                <div className="">
+                <Timer></Timer>
+                <div className="canvas-container">
                     <canvas id="left-canvas" width="350" height="386" onClick={this.handleClick.bind(this)}></canvas>
                     <canvas id="right-canvas" width="350" height="386" onClick={this.handleClick.bind(this)}></canvas>
                 </div>

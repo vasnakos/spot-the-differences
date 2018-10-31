@@ -23,12 +23,26 @@
 }
 
 /* Canvas Styling */
+.canvas-container {
+  margin: 0 auto;
+  max-width: 725px;
+}
 canvas {
   float: left;
   width: 350px;
   height: 386px;
 }
 canvas:first-child { margin-right: 25px; }
+
+
+/* Timer Styling */
+.timer {
+  font-size: 50px;
+  font-weight: bold;
+  color: #59adfb;
+  margin-bottom: 25px;
+}
+
 
 @keyframes App-logo-spin {
   from {
