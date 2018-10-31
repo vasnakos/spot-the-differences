@@ -9,11 +9,36 @@ class App extends Component {
     constructor(){
         super();
         this.state = {
-            answersCoords
+            answersCoords,
+            time : 60000
         };
     }
     componentDidMount() {
         this.handleCanvas();
+        this.tick();
+    }
+
+    tick() {
+        let time = this.state.time;
+        this.interval = setInterval(() => {
+            if (time >= 0) {
+                time -= 1000;
+                this.setState({
+                    time
+                });
+            } else {
+                this.stop();
+            }
+
+        }, 1000);
+    }
+
+    componentWillUnmount() {
+        this.stop();
+    }
+
+    stop() {
+        clearInterval(this.interval);
     }
 
     /** Function to draw an image on a canvas element
@@ -82,11 +107,12 @@ class App extends Component {
             y: e.clientY - canvas.offsetTop
         };
         let answers = this.state.answersCoords;
-
+        let correctAnswer = false;
         for (let i = 0; i < answers.length; i ++) {
             if (!answers[i].found) {
                 if ((answers[i].coords[0] - 15) < mousePos.x && mousePos.x < (answers[i].coords[0] + 15)) {
                     if ((answers[i].coords[1] - 15) < mousePos.y && mousePos.y < (answers[i].coords[1] + 15)) {
+                        correctAnswer = true;
                         answers[i].found = true;
                         this.setState({
                             answersCoords: answers
@@ -96,6 +122,12 @@ class App extends Component {
                         break;
                     }
                 }
+            }
+        }
+        if (!correctAnswer) {
+            this.stop();
+            if (this.state > 5000) {
+                this.setState({ time: (this.state.time - 5000) }, () => this.tick());
             }
 
         }
@@ -108,7 +140,7 @@ class App extends Component {
                     <h1>Spot the Differences</h1>
                 </header>
 
-                <Timer></Timer>
+                <Timer time={this.state.time}></Timer>
                 <div className="canvas-container">
                     <canvas id="left-canvas" width="350" height="386" onClick={this.handleClick.bind(this)}></canvas>
                     <canvas id="right-canvas" width="350" height="386" onClick={this.handleClick.bind(this)}></canvas>
